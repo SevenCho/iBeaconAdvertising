@@ -14,21 +14,16 @@ class ViewController: UIViewController
 {
     @IBOutlet weak var stateLbl: UILabel!
     
-    let beaconUUID = "B0702880-A295-A8AB-F734-031A98A512DE"
-    private var beaconMajorValue: CLBeaconMajorValue?
-    private var beaconMinorValue: CLBeaconMinorValue?
-    let beaconIdentity = "kitty"
+    private let beaconIdentity = "kitty"
+    private let beaconUUID = "B0702880-A295-A8AB-F734-031A98A512DE"
+    private let beaconMajorValue = UInt16(2)
+    private let beaconMinorValue = UInt16(7)
     
     private var peripheraManager: CBPeripheralManager?
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        // defult value
-        beaconMajorValue = UInt16(2)
-        beaconMinorValue = UInt16(7)
         
         peripheraManager = CBPeripheralManager(delegate: self, queue: .main)
     }
@@ -66,7 +61,7 @@ extension ViewController: CBPeripheralManagerDelegate
         guard let uuid = UUID(uuidString: beaconUUID) else {
             return
         }
-        let region = CLBeaconRegion(proximityUUID: uuid, major: beaconMajorValue!, minor: beaconMinorValue!, identifier: beaconIdentity)
+        let region = CLBeaconRegion(proximityUUID: uuid, major: beaconMajorValue, minor: beaconMinorValue, identifier: beaconIdentity)
         let regionData = region.peripheralData(withMeasuredPower: nil)
         let regionAdvertising = regionData as? [String : Any]
         peripheraManager?.startAdvertising(regionAdvertising)
